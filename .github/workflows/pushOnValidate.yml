@@ -13,7 +13,6 @@ jobs:
       - run: npm install @salesforce/cli --global
       - name: Create server.key file
         run: echo "${{ secrets.SERVER_KEY }}" > server.key
-
       - name: Authenticate to Salesforce using JWT
         run: |
             sf org login jwt --client-id "${{ secrets.SALESFORCE_CONSUMER_KEY }}" \
@@ -21,10 +20,9 @@ jobs:
             --username "${{ vars.DEVHUB_USERNAME }}" \
             --set-default-dev-hub \
             --alias DevHub
-
       - name: Validate deployment (dry-run)
         run: |
-          sf project deploy start --manifest ./manifest/package.xml -w180 --dry-run -c -l --target-org DevHub
+          sf project deploy start --manifest ./manifest/package.xml -w180 --dry-run -c -l NoTestRun --target-org DevHub
      # - run: echo "${{ secrets.SERVER_KEY }}" > server.key
      # - run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ vars.DEVHUB_USERNAME }} --setdefaultdevhubusername
      # - run: sf org login jwt --client-id=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwt-key-file /Users/smo/JWT/server.key --username=${{ vars.DEVHUB_USERNAME }} --set-default
