@@ -16,8 +16,7 @@ jobs:
 
       - name: Authenticate to Salesforce using JWT
         run: |
-          echo "${{ secrets.SERVER_KEY }}" > server.key
-          sf org login jwt --client-id "${{ secrets.SALESFORCE_CONSUMER_KEY }}" \
+            sf org login jwt --client-id "${{ secrets.SALESFORCE_CONSUMER_KEY }}" \
             --jwt-key-file server.key \
             --username "${{ secrets.DEVHUB_USERNAME }}" \
             --set-default-dev-hub \
