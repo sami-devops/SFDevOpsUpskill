@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  SFDX-CLI-Deploy:
+  Salesforce-CI/CD-Deployment:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🐧 GitHub Action running on ${{ runner.os }}"
