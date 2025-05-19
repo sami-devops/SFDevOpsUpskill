@@ -22,7 +22,7 @@ jobs:
             --alias DevHub
       - name: Validate deployment (dry-run)
         run: |
-          sf project deploy start --manifest ./manifest/package.xml -w180 --dry-run -c -l NoTestRun --target-org DevHub
+          sf project deploy start --source-dir force-app -w180 --dry-run -c -l NoTestRun --target-org DevHub
      # - run: echo "${{ secrets.SERVER_KEY }}" > server.key
      # - run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ vars.DEVHUB_USERNAME }} --setdefaultdevhubusername
      # - run: sf org login jwt --client-id=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwt-key-file /Users/smo/JWT/server.key --username=${{ vars.DEVHUB_USERNAME }} --set-default
