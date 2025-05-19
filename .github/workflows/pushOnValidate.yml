@@ -1,0 +1,35 @@
+name: Validate Commit
+on:
+  push:
+    branches:
+      - main
+jobs:
+  SFDX-CLI-Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🐧 GitHub Action running on ${{ runner.os }}"
+      - run: echo "🔎 Retrieving ${{ github.ref }} from ${{ github.repository }}."
+      - uses: actions/checkout@v4
+      - run: npm install @salesforce/cli --global
+      - name: Create server.key file
+        run: echo "${{ secrets.SERVER_KEY }}" > server.key
+
+      - name: Authenticate to Salesforce using JWT
+        run: |
+          echo "${{ secrets.SERVER_KEY }}" > server.key
+          sf org login jwt --client-id "${{ secrets.SALESFORCE_CONSUMER_KEY }}" \
+            --jwt-key-file server.key \
+            --username "${{ secrets.DEVHUB_USERNAME }}" \
+            --set-default-dev-hub \
+            --alias DevHub
+
+      - name: Validate deployment (dry-run)
+        run: |
+          sf project deploy start --dry-run \
+            --manifest ./manifest/package.xml \
+            --target-org DevHub \
+            --testlevel RunLocalTests
+     # - run: echo "${{ secrets.SERVER_KEY }}" > server.key
+     # - run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile=server.key --username=${{ vars.DEVHUB_USERNAME }} --setdefaultdevhubusername
+     # - run: sf org login jwt --client-id=${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwt-key-file /Users/smo/JWT/server.key --username=${{ vars.DEVHUB_USERNAME }} --set-default
+     # - run: sfdx force:source:deploy --manifest=manifest/package.xml --testlevel=RunLocalTests -u ${{ vars.DEVHUB_USERNAME }}
