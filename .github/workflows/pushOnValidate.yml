@@ -22,5 +22,5 @@ jobs:
             --alias DevHub
       - name: Validate deployment (dry-run)
         run: |
-            sf project deploy start --source-dir force-app --target-org DevHub -l NoTestRun
+            sf project deploy start --source-dir force-app --target-org DevHub -l NoTestRun --dry-run
      
