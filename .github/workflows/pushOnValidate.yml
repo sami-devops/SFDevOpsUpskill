@@ -12,7 +12,9 @@ jobs:
       - uses: actions/checkout@v4
       - run: npm install @salesforce/cli --global
       - name: Create server.key file
-        run: echo "${{ secrets.SERVER_KEY }}" > server.key
+        run: |
+            set +x
+            echo "${{ secrets.SERVER_KEY }}" > server.key
       - name: Authenticate to Salesforce using JWT
         run: |
             sf org login jwt --client-id "${{ secrets.SALESFORCE_CONSUMER_KEY }}" \
