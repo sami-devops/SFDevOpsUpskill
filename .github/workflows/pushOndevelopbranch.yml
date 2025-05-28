@@ -1,0 +1,35 @@
+name: Validate Commit
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  validate-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set environment variables
+        run: |
+          echo "AUTHURL=${{ secrets.SALESFORCE_OAUTH_URL }}" >> $GITHUB_ENV
+          echo "DEPLOYMENTUSER=${{ vars.DEVHUB_USERNAME }}" >> $GITHUB_ENV
+
+      - name: Install Salesforce CLI
+        run: npm install @salesforce/cli --global
+
+      - name: Retrieve secret
+        shell: bash
+        run: |
+          echo '{
+            "sfdxAuthUrl": "'"$AUTHURL"'"
+          }' > ./SFDX_URL_STORE.json
+
+      - name: 'Authenticate SFDX CLI'
+        run: sf org login sfdx-url --sfdx-url-file ./SFDX_URL_STORE.json --alias target
+
+      - name: 'Validate'
+        run: |
+          sf project deploy start --source-dir force-app --target-org target -l NoTestRun --dry-run
