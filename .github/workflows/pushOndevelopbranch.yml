@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - develop
+      - feature/*
 jobs:
   validate-deployment:
     runs-on: ubuntu-latest
