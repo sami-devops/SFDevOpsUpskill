@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
+        # Set environment variables from GitHub secrets and variables 
       - name: Set environment variables
         run: |
           echo "AUTHURL=${{ secrets.SALESFORCE_OAUTH_URL }}" >> $GITHUB_ENV
